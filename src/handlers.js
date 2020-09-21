@@ -36,22 +36,24 @@ const processGithubOauth = async function (req, res) {
   const data = await fetchAuthData(generateAccessTokenConfig(code));
   const accessToken = data && data['access_token'];
   if (accessToken) {
-    // res.cookie('sId', sessionId);
-    // sessions[sessionId] = accessToken;
-    // sessionId++;
-    // req.app.locals.accessToken = accessToken;
-    // res.end();
-    res.redirect('/');
+    res.cookie('sId', sessionId);
+    sessions[sessionId] = accessToken;
+    sessionId++;
+    res.redirect(`${process.env.reactServer}`);
   }
+};
+
+const isSignedIn = function (req, res) {
+  const { sId } = req.cookies;
+  if (sessions[sId]) {
+    return res.json({ isLoggedIn: true });
+  }
+  res.json({ isLoggedIn: false });
 };
 
 const signIn = function (req, res) {
-  const { sId } = req.cookies;
-  if (sessions[sId]) {
-    return res.redirect('/');
-  }
   const params = `client_id=${process.env.client_id}`;
-  res.redirect(`https://github.com/login/oauth/authorize?${params}`);
+  res.json({ href: `https://github.com/login/oauth/authorize?${params}` });
 };
 
-module.exports = { signIn, processGithubOauth };
+module.exports = { signIn, processGithubOauth, isSignedIn };
