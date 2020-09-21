@@ -32,15 +32,15 @@ const generateAccessTokenConfig = function (code) {
 };
 
 const processGithubOauth = async function (req, res) {
-  const code = req.url.split('=')[1];
+  const { code } = req.query;
   const data = await fetchAuthData(generateAccessTokenConfig(code));
   const accessToken = data && data['access_token'];
   if (accessToken) {
     res.cookie('sId', sessionId);
     sessions[sessionId] = accessToken;
     sessionId++;
-    res.redirect(`${process.env.reactServer}`);
   }
+  res.redirect(`${process.env.reactServer}`);
 };
 
 const isSignedIn = function (req, res) {
