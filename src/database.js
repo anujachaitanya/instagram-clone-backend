@@ -15,6 +15,7 @@ class Database {
   getList(key) {
     return new Promise((resolve, reject) => {
       this.db.hgetall(key, (err, data) => {
+        console.log(data);
         resolve(data);
       });
     });
@@ -22,9 +23,9 @@ class Database {
 
   getFromList(key, field) {
     return new Promise((resolve, reject) => {
-      this.db.hget(key, field, (err, task) => {
+      this.db.hget(key, field, (err, data) => {
         err && reject(reject);
-        resolve(task);
+        resolve(JSON.parse(data));
       });
     });
   }

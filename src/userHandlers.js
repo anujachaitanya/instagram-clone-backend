@@ -22,4 +22,22 @@ const getAllPosts = async function (req, res) {
   res.json(posts);
 };
 
-module.exports = { addPost, attachUser, getAllPosts };
+const getUser = async function (req, res) {
+  const { id } = req.params;
+  const { db } = req.app.locals;
+  const details = await db.getFromList('users', id);
+  res.json(details);
+};
+
+const getUsersPosts = async function (req, res) {
+  const { id } = req.params;
+  const { db } = req.app.locals;
+  const posts = await db.getList('posts');
+  const userPosts = Object.values(posts).filter((post) => {
+    return JSON.parse(post).user.id == id;
+  });
+  console.log(userPosts);
+  res.json(userPosts);
+};
+
+module.exports = { addPost, attachUser, getAllPosts, getUser, getUsersPosts };
