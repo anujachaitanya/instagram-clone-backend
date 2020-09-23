@@ -1,5 +1,4 @@
 const {
-  saveFile,
   fetchAuthData,
   generateAccessTokenConfig,
   getUserDetails,
@@ -13,7 +12,7 @@ const processGithubOauth = async function (req, res) {
   if (accessToken) {
     const userDetails = await getUserDetails(accessToken);
     await db.addUser(userDetails);
-    const sessionId = sessions.createSession(userDetails.id);
+    const sessionId = sessions.createSession(userDetails);
     res.cookie('sId', sessionId);
   }
   res.redirect(`${process.env.reactServer}/`);
@@ -21,11 +20,12 @@ const processGithubOauth = async function (req, res) {
 
 const isSignedIn = function (req, res) {
   const { sId } = req.cookies;
-  console.log(req.cookies);
-  if (req.app.locals.sessions.getSession(sId)) {
-    return res.json({ isLoggedIn: true });
+  const { sessions } = req.app.locals;
+  const userSession = sessions.getSession(sId);
+  if (userSession) {
+    return res.json({ user: userSession });
   }
-  res.json({ isLoggedIn: false });
+  res.json({ user: null });
 };
 
 const signIn = function (req, res) {

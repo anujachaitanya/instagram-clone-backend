@@ -3,10 +3,18 @@ class Database {
     this.db = db;
   }
 
+  incrementPostId() {
+    return new Promise((resolve, reject) => {
+      this.db.incr('postid', (err, number) => {
+        err && reject(err);
+        resolve(number);
+      });
+    });
+  }
+
   getList(key) {
     return new Promise((resolve, reject) => {
       this.db.hgetall(key, (err, data) => {
-        console.log('here', data);
         resolve(data);
       });
     });
@@ -31,20 +39,13 @@ class Database {
     });
   }
 
-  pushTo(key, field, value) {
-    return new Promise((resolve, reject) => {
-      this.db.hset(key, field, value, (err, number) => {
-        err && reject(err);
-        resolve(number);
-      });
-    });
-  }
-
-  IncrementId(key) {
-    return new Promise((resolve, reject) => {
-      this.db.incr(key, (err, number) => {
-        err && reject(err);
-        resolve(number);
+  addPost(post) {
+    return new Promise(async (resolve, reject) => {
+      this.incrementPostId().then((id) => {
+        this.db.hset('posts', id, JSON.stringify(post), (err) => {
+          err && reject(err);
+          resolve(true);
+        });
       });
     });
   }

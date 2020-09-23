@@ -6,7 +6,7 @@ const clientSecret = process.env.client_secret;
 const saveFile = function (file) {
   return new Promise((resolve, reject) => {
     fs.writeFile(`public/posts/${file.md5}`, file.data, () =>
-      resolve(`/post/${file.md5}`)
+      resolve(`/image/${file.md5}`)
     );
   });
 };
