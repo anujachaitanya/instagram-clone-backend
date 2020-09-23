@@ -13,6 +13,11 @@ class Session {
   getSession(sessionId) {
     return this.sessions[sessionId];
   }
+
+  deleteSession(sessionId) {
+    delete this.sessions[sessionId];
+    return true;
+  }
 }
 
 module.exports = Session;

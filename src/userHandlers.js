@@ -39,4 +39,18 @@ const getUsersPosts = async function (req, res) {
   res.json(userPosts);
 };
 
-module.exports = { addPost, attachUser, getAllPosts, getUser, getUsersPosts };
+const logout = function (req, res) {
+  const { sId } = req.cookies;
+  const { sessions } = req.app.locals;
+  const status = sessions.deleteSession(sId);
+  return res.json({ status });
+};
+
+module.exports = {
+  addPost,
+  attachUser,
+  getAllPosts,
+  getUser,
+  getUsersPosts,
+  logout,
+};
