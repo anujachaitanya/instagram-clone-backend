@@ -15,7 +15,6 @@ class Database {
   getList(key) {
     return new Promise((resolve, reject) => {
       this.db.hgetall(key, (err, data) => {
-        console.log(data);
         resolve(data);
       });
     });
@@ -32,7 +31,6 @@ class Database {
 
   addUser(details) {
     return new Promise((resolve, reject) => {
-      console.log(details);
       this.db.hset('users', details.id, JSON.stringify(details), (err) => {
         err && reject(err);
         resolve(true);
