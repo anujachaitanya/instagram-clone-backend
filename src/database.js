@@ -1,3 +1,5 @@
+const { values } = require('lodash');
+
 class Database {
   constructor(db) {
     this.db = db;
@@ -29,6 +31,15 @@ class Database {
     });
   }
 
+  updateList(key, field, value) {
+    return new Promise((resolve, reject) => {
+      this.db.hset(key, field, JSON.stringify(value), (err) => {
+        err && reject(err);
+        resolve(true);
+      });
+    });
+  }
+
   addUser(details) {
     return new Promise((resolve, reject) => {
       this.db.hset('users', details.id, JSON.stringify(details), (err) => {
@@ -41,10 +52,15 @@ class Database {
   addPost(post) {
     return new Promise(async (resolve, reject) => {
       this.incrementPostId().then((id) => {
-        this.db.hset('posts', id, JSON.stringify(post), (err) => {
-          err && reject(err);
-          resolve(true);
-        });
+        this.db.hset(
+          'posts',
+          id,
+          JSON.stringify({ postId: id, ...post }),
+          (err) => {
+            err && reject(err);
+            resolve(true);
+          }
+        );
       });
     });
   }

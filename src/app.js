@@ -16,6 +16,7 @@ app.locals.sessions = new Sessions();
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(fileUpload());
 app.use(logger('dev'));
+app.use(express.json());
 app.use('/image', express.static('public/posts'));
 app.use(express.static('public'));
 app.use(cookieParser());
