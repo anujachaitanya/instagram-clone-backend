@@ -10,6 +10,7 @@ const attachUser = async function (req, res, next) {
 const addPost = async function (req, res) {
   const { db } = req.app.locals;
   const image = req.files && req.files.file;
+  console.log(image);
   const caption = req.body.caption || '';
   const path = await saveFile(image);
   const post = { caption, path, user: req.user, comments: [], likes: [] };

@@ -4,6 +4,7 @@ const axios = require('axios');
 const clientID = process.env.client_id;
 const clientSecret = process.env.client_secret;
 const saveFile = function (file) {
+  console.log(file);
   return new Promise((resolve, reject) => {
     fs.writeFile(`public/posts/${file.md5}`, file.data, () =>
       resolve(`/image/${file.md5}`)
