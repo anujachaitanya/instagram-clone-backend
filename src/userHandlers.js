@@ -21,7 +21,6 @@ const getAllPosts = async function (req, res) {
   const { db } = req.app.locals;
   const posts = await db.getList('posts');
   const postIds = await db.getKeys('posts');
-  console.log(postIds);
   res.json(posts);
 };
 
@@ -59,16 +58,14 @@ const toggleLike = async function (req, res) {
     post.likes.push(req.user.id);
   }
   await db.updateList('posts', post.postId, post);
-  return res.end();
+  return res.json({ likes: post.likes });
 };
 
 const addComment = async function (req, res) {
   const { postId, comment } = req.body;
-  console.log(req.user);
   const { db } = req.app.locals;
   const post = await db.getFromList('posts', postId);
-  console.log(post);
-  post.comments.push({ user: req.user.username, comment });
+  post.comments.unshift({ user: req.user.username, comment });
   await db.updateList('posts', post.postId, post);
   return res.end();
 };
@@ -77,7 +74,6 @@ const getPost = async function (req, res) {
   const { postId } = req.params;
   const { db } = req.app.locals;
   const details = await db.getFromList('posts', postId);
-  console.log(details);
   res.json(details);
 };
 
