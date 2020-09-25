@@ -22,6 +22,14 @@ class Database {
     });
   }
 
+  getKeys(key) {
+    return new Promise((resolve, reject) => {
+      this.db.hkeys(key, (err, data) => {
+        resolve(data);
+      });
+    });
+  }
+
   getFromList(key, field) {
     return new Promise((resolve, reject) => {
       this.db.hget(key, field, (err, data) => {
