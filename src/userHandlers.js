@@ -38,6 +38,7 @@ const getUsersPosts = async function (req, res) {
   const userPosts = Object.values(posts).filter((post) => {
     return JSON.parse(post).user.id == id;
   });
+  console.log(userPosts);
   res.json(userPosts);
 };
 

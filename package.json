@@ -4,8 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "export reactServer='http://localhost:3000'; node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "export reactServer=''; node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "./shellScripts/getReactApp.sh"
   },
   "keywords": [],
   "author": "",

@@ -13,6 +13,7 @@ const app = express();
 app.locals.db = new Database(getRedisClient());
 app.locals.sessions = new Sessions();
 
+app.use(express.static('build'));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(fileUpload());
 app.use(logger('dev'));
